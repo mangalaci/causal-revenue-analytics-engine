@@ -114,7 +114,7 @@ t2_end = st.sidebar.date_input("t2 end", value=prev_month_end)
 origin = st.sidebar.text_input("Origin filter", value="invoices")
 csv_encoding = st.sidebar.selectbox("CSV encoding", ["cp1250", "utf-8", "latin-1", "iso-8859-2"], index=0)
 
-run_btn = st.sidebar.button("Run Analysis", type="primary", use_container_width=True)
+run_btn = st.sidebar.button("Run Analysis", type="primary", width="stretch")
 
 
 # ------------------------------------------------------------------
@@ -239,7 +239,7 @@ with tab1:
             height=400,
             margin=dict(t=20),
         )
-        st.plotly_chart(fig_bridge, use_container_width=True)
+        st.plotly_chart(fig_bridge, width="stretch")
 
     with col_pvm:
         st.subheader("PVM Waterfall (Common Products)")
@@ -268,7 +268,7 @@ with tab1:
             height=400,
             margin=dict(t=20),
         )
-        st.plotly_chart(fig_pvm, use_container_width=True)
+        st.plotly_chart(fig_pvm, width="stretch")
 
 
 # ==================================================================
@@ -290,7 +290,7 @@ with tab2:
                 "t2 Rev": fmt_money(q.get("t2_rev")),
                 "Δ Rev": fmt_money(q.get("delta_rev")),
             })
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
     st.divider()
 
@@ -321,7 +321,7 @@ with tab2:
                         "ΔR": fmt_money(p.get("delta_rev")),
                         "Share %": fmt_pct(p.get("share_pct")),
                     })
-                st.dataframe(pd.DataFrame(tp_rows), use_container_width=True, hide_index=True)
+                st.dataframe(pd.DataFrame(tp_rows), width="stretch", hide_index=True)
 
     # Reconciliation
     if reconciliation:
@@ -380,7 +380,7 @@ with tab3:
                     "Margin Δ": fmt_money(dm),
                     "Suggested Action": action,
                 })
-            st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 
 # ==================================================================
@@ -442,7 +442,7 @@ with tab4:
                             {"CT2_pack": p.get("CT2_pack"), "Volume Effect": fmt_money(p.get("volume_effect")), "Share": fmt_pct(p.get("share"))}
                             for p in top_neg[:3]
                         ]
-                        st.dataframe(pd.DataFrame(neg_rows), use_container_width=True, hide_index=True)
+                        st.dataframe(pd.DataFrame(neg_rows), width="stretch", hide_index=True)
                 with pos_col:
                     if top_pos:
                         st.markdown("Top positive contributors:")
@@ -450,7 +450,7 @@ with tab4:
                             {"CT2_pack": p.get("CT2_pack"), "Volume Effect": fmt_money(p.get("volume_effect")), "Share": fmt_pct(p.get("share"))}
                             for p in top_pos[:3]
                         ]
-                        st.dataframe(pd.DataFrame(pos_rows), use_container_width=True, hide_index=True)
+                        st.dataframe(pd.DataFrame(pos_rows), width="stretch", hide_index=True)
 
     st.divider()
 
@@ -486,7 +486,7 @@ with tab4:
                             {"CT2_pack": p.get("CT2_pack"), "Price Effect": fmt_money(p.get("price_effect")), "Share": fmt_pct(p.get("share"))}
                             for p in top_neg[:3]
                         ]
-                        st.dataframe(pd.DataFrame(neg_rows), use_container_width=True, hide_index=True)
+                        st.dataframe(pd.DataFrame(neg_rows), width="stretch", hide_index=True)
                 with pos_col:
                     if top_pos:
                         st.markdown("Top positive contributors:")
@@ -494,7 +494,7 @@ with tab4:
                             {"CT2_pack": p.get("CT2_pack"), "Price Effect": fmt_money(p.get("price_effect")), "Share": fmt_pct(p.get("share"))}
                             for p in top_pos[:3]
                         ]
-                        st.dataframe(pd.DataFrame(pos_rows), use_container_width=True, hide_index=True)
+                        st.dataframe(pd.DataFrame(pos_rows), width="stretch", hide_index=True)
 
 
 # ==================================================================
@@ -545,4 +545,4 @@ with tab5:
                     {"CT2_pack": p.get("CT2_pack", ""), "Margin Δ": fmt_money(p.get("delta_margin"))}
                     for p in top_by_abs[:10]
                 ]
-                st.dataframe(pd.DataFrame(margin_rows), use_container_width=True, hide_index=True)
+                st.dataframe(pd.DataFrame(margin_rows), width="stretch", hide_index=True)
