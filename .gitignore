@@ -1,6 +1,7 @@
 # Data files
 *.csv
 *.csv.gz
+!abbb.csv.gz
 
 # Output files
 *.json

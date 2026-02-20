@@ -3,8 +3,8 @@ Causal Revenue Analytics Engine — Streamlit Dashboard
 Stage 1 only: PVM (Price-Volume-Mix) decomposition from CSV data.
 """
 
-import io
 from datetime import date, timedelta
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -13,8 +13,10 @@ import streamlit as st
 
 from analyzer_from_csv_v2 import (
     AnalyzerConfig,
-    build_llm_input_v2_from_buffers,
+    build_llm_input_v2,
 )
+
+DATA_CSV = "abbb.csv.gz"
 
 
 # ------------------------------------------------------------------
@@ -93,10 +95,7 @@ st.caption("PVM (Price-Volume-Mix) decomposition from CSV data")
 # ------------------------------------------------------------------
 # Sidebar
 # ------------------------------------------------------------------
-st.sidebar.header("Data & Configuration")
-
-main_file = st.sidebar.file_uploader("Main CSV (abbb.csv format)", type=["csv"])
-inv_file = st.sidebar.file_uploader("Inventory CSV (optional)", type=["csv"])
+st.sidebar.header("Configuration")
 
 st.sidebar.subheader("Period Settings")
 
@@ -121,16 +120,21 @@ run_btn = st.sidebar.button("Run Analysis", type="primary", use_container_width=
 # ------------------------------------------------------------------
 # Main logic
 # ------------------------------------------------------------------
-if not main_file:
-    st.info("Upload a main CSV file in the sidebar to begin.")
-    st.stop()
-
 if not run_btn and "result" not in st.session_state:
     st.info("Configure periods and click **Run Analysis**.")
     st.stop()
 
 if run_btn:
+    data_dir = str(Path(__file__).parent)
+    csv_path = Path(data_dir) / DATA_CSV
+    if not csv_path.exists():
+        st.error(f"Data file not found: {DATA_CSV}")
+        st.stop()
+
     cfg = AnalyzerConfig(
+        data_dir=data_dir,
+        input_csv=DATA_CSV,
+        inventory_csv=None,
         t1_start=str(t1_start),
         t1_end=str(t1_end),
         t2_start=str(t2_start),
@@ -139,20 +143,11 @@ if run_btn:
         csv_encoding=csv_encoding,
         csv_engine="python",
         csv_on_bad_lines="skip",
-        inventory_encoding=csv_encoding,
     )
-
-    main_file.seek(0)
-    main_buffer = io.TextIOWrapper(main_file, encoding=csv_encoding, errors="replace")
-
-    inv_buffer = None
-    if inv_file is not None:
-        inv_file.seek(0)
-        inv_buffer = io.TextIOWrapper(inv_file, encoding=csv_encoding, errors="replace")
 
     with st.spinner("Running PVM analysis..."):
         try:
-            result = build_llm_input_v2_from_buffers(main_buffer, inv_buffer, cfg)
+            result = build_llm_input_v2(cfg)
             st.session_state["result"] = result
         except Exception as e:
             st.error(f"Analysis failed: {e}")
