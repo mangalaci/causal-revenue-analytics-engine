@@ -111,10 +111,11 @@ t1_end = st.sidebar.date_input("t1 end", value=two_months_ago_end)
 t2_start = st.sidebar.date_input("t2 start", value=prev_month_start)
 t2_end = st.sidebar.date_input("t2 end", value=prev_month_end)
 
-origin = st.sidebar.text_input("Origin filter", value="invoices")
-csv_encoding = st.sidebar.selectbox("CSV encoding", ["cp1250", "utf-8", "latin-1", "iso-8859-2"], index=0)
+dates_valid = t1_end < t2_start
+if not dates_valid:
+    st.sidebar.error("t1 vége nem lehet később, mint t2 eleje.")
 
-run_btn = st.sidebar.button("Run Analysis", type="primary", width="stretch")
+run_btn = st.sidebar.button("Run Analysis", type="primary", width="stretch", disabled=not dates_valid)
 
 
 # ------------------------------------------------------------------
@@ -139,8 +140,8 @@ if run_btn:
         t1_end=str(t1_end),
         t2_start=str(t2_start),
         t2_end=str(t2_end),
-        origin=origin,
-        csv_encoding=csv_encoding,
+        origin="invoices",
+        csv_encoding="iso-8859-2",
         csv_engine="python",
         csv_on_bad_lines="skip",
     )
