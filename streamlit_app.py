@@ -16,7 +16,7 @@ from analyzer_from_csv_v2 import (
     build_llm_input_v2,
 )
 
-DATA_CSV = "abbb.csv.gz"
+DATA_CSV = "abbb_new.csv"
 
 
 # ------------------------------------------------------------------

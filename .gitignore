@@ -2,6 +2,7 @@
 *.csv
 *.csv.gz
 !abbb.csv.gz
+!abbb_new.csv
 
 # Output files
 *.json

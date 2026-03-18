@@ -15,7 +15,7 @@ import pandas as pd
 @dataclass
 class AnalyzerConfig:
     data_dir: str = "."
-    input_csv: str = "abbb.csv"
+    input_csv: str = "abbb_new.csv"
 
     # Period meta
     t1_start: str = "2025-11-01"
@@ -57,7 +57,6 @@ USECOLS = [
     "revenues_wdisc_in_base_currency",
     "net_margin_wdisc_in_base_currency",
     "repeat_buyer",
-    "user_id",
 ]
 
 SAFE_DTYPES = {
@@ -65,7 +64,6 @@ SAFE_DTYPES = {
     "erp_invoice_id": "string",
     "CT2_pack": "string",
     "repeat_buyer": "string",
-    "user_id": "string",
 }
 
 INVENTORY_USECOLS = [
@@ -1496,10 +1494,10 @@ def build_llm_input_v2_from_buffers(main_buffer, inv_buffer, cfg: AnalyzerConfig
 if __name__ == "__main__":
     cfg = AnalyzerConfig(
         data_dir=".",
-        input_csv="abbb.csv",
+        input_csv="abbb_new.csv",
         inventory_csv="BASE_TABLE_INVENTORY.csv",
         output_json="llm_input_v2.json",
-        csv_encoding="cp1250",
+        csv_encoding="utf-8",
         csv_engine="python",
         csv_on_bad_lines="skip",
     )
